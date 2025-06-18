@@ -1,0 +1,99 @@
+Q1 GEM5 + NVMAIN BUILD-UP 
+
+Follow exactly the same as the slides. The only difference is that I have to use Python 2 and it's not written in it.
+
+####################################################################################################
+
+Q2 Enable L3 last level cache in GEM5 + NVMAIN
+
+scons EXTRAS=../NVmain build/X86/gem5.opt
+
+./build/X86/gem5.opt configs/example/se.py \
+-c tests/test-progs/hello/bin/x86/linux/hello \
+--cpu-type=TimingSimpleCPU --caches --l2cache --l3cache --mem-type=NVMainMemory \
+--nvmain-config=../NVmain/Config/PCM_ISSCC_2012_4GB.config > q2_nvmainoutput.txt
+
+####################################################################################################
+
+Q3 Config last level cache to 2-way and full-way associative cache and test performance
+
+gcc --static quicksort.c -o quicksort // under the path of /home/benchmark //
+
+scons EXTRAS=../NVmain build/X86/gem5.opt
+
+// 1MB, 2-way
+./build/X86/gem5.opt configs/example/se.py \
+-c ../benchmark/quicksort --cpu-type=TimingSimpleCPU \
+--caches --l1i_size=32kB --l1d_size=32kB --l2cache --l2_size=128kB \
+--l3cache --l3_size=1MB --l3_assoc=2 --mem-type=NVMainMemory \
+--nvmain-config=../NVmain/Config/PCM_ISSCC_2012_4GB.config > q3_1mb_2way_nvmainoutput.txt
+
+// 256kB, 2-way
+./build/X86/gem5.opt configs/example/se.py \
+-c ../benchmark/quicksort --cpu-type=TimingSimpleCPU \
+--caches --l1i_size=32kB --l1d_size=32kB --l2cache --l2_size=128kB \
+--l3cache --l3_size=256kB --l3_assoc=2 --mem-type=NVMainMemory \
+--nvmain-config=../NVmain/Config/PCM_ISSCC_2012_4GB.config > q3_256kb_2way_nvmainoutput.txt
+
+// 1MB, full-way
+./build/X86/gem5.opt configs/example/se.py \
+-c ../benchmark/quicksort --cpu-type=TimingSimpleCPU \
+--caches --l1i_size=32kB --l1d_size=32kB --l2cache --l2_size=128kB \
+--l3cache --l3_size=1MB --l3_assoc=16384 --mem-type=NVMainMemory \
+--nvmain-config=../NVmain/Config/PCM_ISSCC_2012_4GB.config > q3_1mb_full_nvmainoutput.txt
+
+// 256kB, full-way
+./build/X86/gem5.opt configs/example/se.py \
+-c ../benchmark/quicksort --cpu-type=TimingSimpleCPU \
+--caches --l1i_size=32kB --l1d_size=32kB --l2cache --l2_size=128kB \
+--l3cache --l3_size=256kB --l3_assoc=16384 --mem-type=NVMainMemory \
+--nvmain-config=../NVmain/Config/PCM_ISSCC_2012_4GB.config > q3_256kb_full_nvmainoutput.txt
+
+####################################################################################################
+
+Q4 Modify last level cache policy based on frequency based replacement policy
+
+scons EXTRAS=../NVmain build/X86/gem5.opt
+
+// 1MB, LRU
+./build/X86/gem5.opt configs/example/se.py \
+-c ../benchmark/quicksort --cpu-type=TimingSimpleCPU \
+--caches --l1i_size=32kB --l1d_size=32kB --l2cache --l2_size=128kB \
+--l3cache --l3_size=1MB --l3_assoc=2 --mem-type=NVMainMemory \
+--nvmain-config=../NVmain/Config/PCM_ISSCC_2012_4GB.config > q4_1mb_lru_nvmainoutput.txt
+
+// 256kB, LRU
+./build/X86/gem5.opt configs/example/se.py \
+-c ../benchmark/quicksort --cpu-type=TimingSimpleCPU \
+--caches --l1i_size=32kB --l1d_size=32kB --l2cache --l2_size=128kB \
+--l3cache --l3_size=1MB --l3_assoc=2 --mem-type=NVMainMemory \
+--nvmain-config=../NVmain/Config/PCM_ISSCC_2012_4GB.config > q4_256kb_lru_nvmainoutput.txt
+
+// 1MB, FBRP
+./build/X86/gem5.opt configs/example/se.py \
+-c ../benchmark/quicksort --cpu-type=TimingSimpleCPU \
+--caches --l1i_size=32kB --l1d_size=32kB --l2cache --l2_size=128kB \
+--l3cache --l3_size=1MB --l3_assoc=2 --mem-type=NVMainMemory \
+--nvmain-config=../NVmain/Config/PCM_ISSCC_2012_4GB.config > q4_1mb_fbrp_nvmainoutput.txt
+
+// 256kB, FBRP
+./build/X86/gem5.opt configs/example/se.py \
+-c ../benchmark/quicksort --cpu-type=TimingSimpleCPU \
+--caches --l1i_size=32kB --l1d_size=32kB --l2cache --l2_size=128kB \
+--l3cache --l3_size=1MB --l3_assoc=2 --mem-type=NVMainMemory \
+--nvmain-config=../NVmain/Config/PCM_ISSCC_2012_4GB.config > q4_256kb_fbrp_nvmainoutput.txt
+
+####################################################################################################
+
+Q5 Test the performance of write back and write through policy based on 4-way associative cache with isscc_pcm
+
+gcc --static multiply.c -o multiply
+
+// write back
+./build/X86/gem5.opt configs/example/se.py -c ../benchmark/multiply --cpu-type=TimingSimpleCPU --caches --l1i_size=32kB --l1d_size=32kB --l2cache --l2_size=128kB --l3cache --l3_size=1MB --l3_assoc=4 --mem-type=NVMainMemory --nvmain-config=../NVmain/Config/PCM_ISSCC_2012_4GB.config > q5_wb_nvmainoutput.txt
+
+// writethrough
+ ./build/X86/gem5.opt configs/example/se.py -c ../benchmark/multiply --cpu-type=TimingSimpleCPU --caches --l1i_size=32kB --l1d_size=32kB --l2cache --l2_size=128kB --l3cache --l3_size=1MB --l3_assoc=4 --mem-type=NVMainMemory --nvmain-config=../NVmain/Config/PCM_ISSCC_2012_4GB.config > q5_wt_nvmainoutput.txt
+
+
+
