@@ -1,6 +1,7 @@
 # 💻 Computer Organization Final Project 2025
 
-> 📌 **Note:** The benchmarks involve working sets that may entirely fit within a large L3 cache. To better observe differences in associativity and replacement policies, experiments in **Q3** and **Q4** were conducted with both **1MB** and **256KB** L3 cache sizes.
+> 📌 **Note:** The assignment requires the L3 cache size to be set to 1MB. However, since a 1MB L3 cache is large enough to fully contain the program's working set, the results of Q3 and Q4 show little difference regardless of changes in associativity or replacement policy. Therefore, in addition to the required setup, I also included output results for Q3 and Q4 using a smaller 256KB L3 cache for comparison.
+
 
 ---
 
