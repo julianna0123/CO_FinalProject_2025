@@ -23,8 +23,8 @@
 
 - `modified_code/`: Modified source code files
   - `Caches.py`: gem5/configs/common/Caches.py , Q2
-  - `Options.py`: gem5/configs/common/Options.py`, Q2
-  - `CPU.py`: gem5/src/cpu/Base/CPU.py, Q2
+  - `Options.py`: gem5/configs/common/Options.py, Q2
+  - `CPU.py`: gem5/src/cpu/BaseCPU.py, Q2
   - `XBar.py`: gem5/src/mem/XBar.py, Q2
   - `CacheConfig.py`: gem5/configs/common/CacheConfig.py, Q2
   - `fb_rp.cc`: gem5/src/mem/cache/replacement_policies/fb_rp.cc, Q4 added
